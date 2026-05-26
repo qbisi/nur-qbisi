@@ -8,12 +8,16 @@
           callPackage,
           directory,
         }:
-        lib.mapAttrs' (
-          fileName: _:
-          lib.nameValuePair (lib.removeSuffix ".nix" fileName) (callPackage (directory + "/${fileName}") { })
-        ) (lib.filterAttrs (fileName: type: type == "regular" && lib.hasSuffix ".nix" fileName) (
-          builtins.readDir directory
-        ));
+        lib.mapAttrs'
+          (
+            fileName: _:
+            lib.nameValuePair (lib.removeSuffix ".nix" fileName) (callPackage (directory + "/${fileName}") { })
+          )
+          (
+            lib.filterAttrs (fileName: type: type == "regular" && lib.hasSuffix ".nix" fileName) (
+              builtins.readDir directory
+            )
+          );
 
       packages = packagesFromFiles {
         inherit (final) callPackage;
