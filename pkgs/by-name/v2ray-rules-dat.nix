@@ -7,16 +7,16 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "v2ray-rules-dat";
-  version = "202605272312";
+  version = "202605282309";
 
   src1 = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geoip.dat";
-    hash = "sha256-0unydbmWxc9na+fH5AJybh7kFfRWYtae3WSUlMpNFxM=";
+    hash = "sha256-LNqRGO6ZldXcFdNmYancMFNKYnK6aILAwVn3zgjwKIs=";
   };
 
   src2 = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
-    hash = "sha256-Rusbg42eWHhOBJTaJfDEqRt/sJv9+JTBSMqyo/bJ2tI=";
+    hash = "sha256-1k4ZBsy42BRyvcHkpRuElVIVeqPHt9VtoD1iwd2tz30=";
   };
 
   dontUnpack = true;
