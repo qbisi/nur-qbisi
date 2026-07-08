@@ -96,7 +96,19 @@ jobs:
             esac
           done < /tmp/packages-to-update
 
+      - name: Check for package changes
+        id: package_changes
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No package updates detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --short
+          fi
+
       - name: Commit
+        if: steps.package_changes.outputs.changed == 'true'
         uses: stefanzweifel/git-auto-commit-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
