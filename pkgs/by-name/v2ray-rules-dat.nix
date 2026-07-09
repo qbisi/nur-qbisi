@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "v2ray-rules-dat";
-  version = "202607062302";
+  version = "202607082259";
 
   src1 = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geoip.dat";
@@ -16,7 +16,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   src2 = fetchurl {
     url = "https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/${finalAttrs.version}/geosite.dat";
-    hash = "sha256-cL6GlWoIGDQ70WWHzB/8su/10AMuzhjMhhQj+BvPCM4=";
+    hash = "sha256-df58583UhS4BI8cd/yxSUdSlQIPi9NuKh2Rm+Dc2CdQ=";
   };
 
   dontUnpack = true;
