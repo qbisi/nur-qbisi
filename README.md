@@ -34,3 +34,17 @@ Normal packages are exposed as:
 
 - `legacyPackages.<system>.<name>`
 - `packages.<system>.<name>`
+
+## Binary cache builds
+
+The `Build master` workflow runs after pushes to `master`, including changes
+created by the package and nixpkgs update workflows. It enumerates and builds
+every package under `packages.${system}` on native `x86_64-linux` and
+`aarch64-linux` runners, then pushes newly built store paths to Cachix.
+
+Create the `cachix` environment under **Settings → Environments**, then define:
+
+- environment variable `CACHIX_CACHE_NAME`: the cache name without the
+  `.cachix.org` suffix;
+- environment secret `CACHIX_AUTH_TOKEN`: a token with write access to that
+  cache.

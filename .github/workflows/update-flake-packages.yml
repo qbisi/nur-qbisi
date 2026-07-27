@@ -53,8 +53,19 @@ jobs:
 
       - name: Commit
         if: steps.package_changes.outputs.changed == 'true'
+        id: commit
         uses: stefanzweifel/git-auto-commit-action@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit_message: "[gha] Nix: update packages"
+
+      # Commits pushed with GITHUB_TOKEN do not emit another push workflow run.
+      - name: Trigger master build
+        if: steps.commit.outputs.changes_detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          gh api --method POST
+          "repos/${GITHUB_REPOSITORY}/dispatches"
+          -f event_type=master-updated
