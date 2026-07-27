@@ -1,0 +1,60 @@
+name: Nix (Update flake packages)
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Update flake packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Enumerate flake packages
+        run: |
+          # shellcheck disable=SC2016
+          nix eval --impure --raw --expr '
+            let
+              flake = builtins.getFlake (toString ./.);
+              system = builtins.currentSystem;
+            in
+            (builtins.concatStringsSep "\n" (builtins.attrNames flake.packages.${system})) + "\n"
+          ' | tee /tmp/flake-packages
+
+      - name: Update packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          while IFS= read -r package; do
+            if ! nix run nixpkgs#nix-update -- --flake "$package"; then
+              echo "::warning title=nix-update failed::$package could not be updated; continuing."
+            fi
+          done < /tmp/flake-packages
+
+      - name: Check for package changes
+        id: package_changes
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No package updates detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --short
+          fi
+
+      - name: Commit
+        if: steps.package_changes.outputs.changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit_message: "[gha] Nix: update packages"
