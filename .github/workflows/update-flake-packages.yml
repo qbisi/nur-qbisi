@@ -26,8 +26,15 @@ jobs:
             let
               flake = builtins.getFlake (toString ./.);
               system = builtins.currentSystem;
+              packages = flake.packages.${system};
+              updatable = builtins.filter
+                (name: packages.${name} ? updateScript)
+                (builtins.attrNames packages);
             in
-            (builtins.concatStringsSep "\n" (builtins.attrNames flake.packages.${system})) + "\n"
+            if updatable == [ ] then
+              ""
+            else
+              (builtins.concatStringsSep "\n" updatable) + "\n"
           ' | tee /tmp/flake-packages
 
       - name: Update packages
@@ -35,7 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           while IFS= read -r package; do
-            if ! nix run nixpkgs#nix-update -- --flake "$package"; then
+            if ! nix run nixpkgs#nix-update -- --flake --use-update-script "$package"; then
               echo "::warning title=nix-update failed::$package could not be updated; continuing."
             fi
           done < /tmp/flake-packages

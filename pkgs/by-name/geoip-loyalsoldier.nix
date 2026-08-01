@@ -27,7 +27,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   dontFixup = true;
 
   passthru = {
-    updateScript = nix-update-script { };
+    updateScript = nix-update-script { extraArgs = [ "--flake" ]; };
     mmdb = "${finalAttrs.finalPackage}/share/clash/Country.mmdb";
   };
 

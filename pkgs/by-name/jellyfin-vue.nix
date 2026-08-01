@@ -2,6 +2,7 @@
   fetchFromGitHub,
   fetchPnpmDeps,
   lib,
+  nix-update-script,
   nodejs_24,
   pnpm_11,
   pnpmConfigHook,
@@ -53,6 +54,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--flake"
+      "--version=branch"
+    ];
+  };
 
   meta = {
     description = "Experimental web client for Jellyfin built with Vue.js";
