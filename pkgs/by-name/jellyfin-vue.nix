@@ -1,0 +1,63 @@
+{
+  fetchFromGitHub,
+  fetchPnpmDeps,
+  lib,
+  nodejs_24,
+  pnpm_11,
+  pnpmConfigHook,
+  stdenvNoCC,
+}:
+
+stdenvNoCC.mkDerivation (finalAttrs: {
+  pname = "jellyfin-vue";
+  version = "0.3.1-unstable-2026-07-27";
+
+  src = fetchFromGitHub {
+    owner = "jellyfin";
+    repo = "jellyfin-vue";
+    rev = "132c7e63aefbeecddd8632f3825ba8a42d8bd828";
+    hash = "sha256-apxK2HntNYKQn1qKyPfOhgikzfLBpYO2JtU/RQOh960=";
+  };
+
+  pnpmDeps = fetchPnpmDeps {
+    inherit (finalAttrs) pname version src;
+    pnpm = pnpm_11;
+    fetcherVersion = 4;
+    hash = "sha256-PilFWG91NFOZgdGjVsCurkPusTIeFj0VjXZGynOs9Ww=";
+  };
+
+  nativeBuildInputs = [
+    nodejs_24
+    pnpm_11
+    pnpmConfigHook
+  ];
+
+  env = {
+    COMMIT_HASH = finalAttrs.src.rev;
+    IS_STABLE = 0;
+  };
+
+  buildPhase = ''
+    runHook preBuild
+
+    pnpm --filter @jellyfin-vue/frontend build
+
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/share
+    cp -a packages/frontend/dist $out/share/jellyfin-vue
+
+    runHook postInstall
+  '';
+
+  meta = {
+    description = "Experimental web client for Jellyfin built with Vue.js";
+    homepage = "https://github.com/jellyfin/jellyfin-vue";
+    license = lib.licenses.gpl3Only;
+    platforms = lib.platforms.all;
+  };
+})
