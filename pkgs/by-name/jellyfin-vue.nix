@@ -11,13 +11,13 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "jellyfin-vue";
-  version = "0.3.1-unstable-2026-08-28";
+  version = "0.3.1-unstable-2026-09-03";
 
   src = fetchFromGitHub {
     owner = "jellyfin";
     repo = "jellyfin-vue";
-    rev = "52fedc6f10dd1746ad5ce41337d88319daf68974";
-    hash = "sha256-RAl+k3Q3UDu2lG6hTlMBAqaK8ceWxmC25yXiMN4a02w=";
+    rev = "cc8e7550cbe885e87b50996cf3dfbfb9831f7ee9";
+    hash = "sha256-SXHSi7R5pXUlv5AcqADxI+x+GSbpelEZY7d+g4H0YAM=";
   };
 
   pnpmDeps = fetchPnpmDeps {
