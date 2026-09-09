@@ -11,20 +11,20 @@
 
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "jellyfin-vue";
-  version = "0.3.1-unstable-2026-09-05";
+  version = "0.3.1-unstable-2026-09-08";
 
   src = fetchFromGitHub {
     owner = "jellyfin";
     repo = "jellyfin-vue";
-    rev = "63edc21f2787706d094a190c93bdc97edd5c233e";
-    hash = "sha256-NZ8eGVyumTXO6fCx+RVG4rm/8g/Bi/Szd0TY4V0Q+HA=";
+    rev = "4e363fa7c82701a55078f5ada7ec2d086760d6ad";
+    hash = "sha256-SqWl4CzAMl5FWeOBxUSVUoaSmCyZQRIWc7OL5N7S4hk=";
   };
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm_11;
     fetcherVersion = 4;
-    hash = "sha256-KaYnbpl+VGbpu4DwftcO3+zpV+nWBJZQgPqfruzehlk=";
+    hash = "sha256-So8p9vSz/m19ERMnzsCe94wiXWazk1sk9tJjI4+N5mI=";
   };
 
   nativeBuildInputs = [
