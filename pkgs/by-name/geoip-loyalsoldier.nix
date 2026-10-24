@@ -6,11 +6,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "geoip-loyalsoldier";
-  version = "202610230252";
+  version = "202610230445";
 
   src = fetchurl {
     url = "https://github.com/Loyalsoldier/geoip/releases/download/${finalAttrs.version}/Country.mmdb";
-    hash = "sha256-KOxcPARqywtZlyLgPEmp+j3kKQ1NMx+Dt3DvKod9mtw=";
+    hash = "sha256-zOxNb6ad46eZYKRgw3esmiPBqQ5fkFLa40iJIeViAd8=";
   };
 
   dontUnpack = true;
