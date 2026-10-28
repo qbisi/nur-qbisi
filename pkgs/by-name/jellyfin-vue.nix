@@ -16,8 +16,8 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   src = fetchFromGitHub {
     owner = "jellyfin";
     repo = "jellyfin-vue";
-    rev = "6d182021f8fa76e31bd1d5462f6ffbcc29615246";
-    hash = "sha256-rGAskrgkhYqYaqYvPidV9cqsIWGwBRdktXMqB/rTkI4=";
+    rev = "5b663a33a0b6b9d627aa02f1c719c04d3a6a22fa";
+    hash = "sha256-d88eRwrrMEGb+ZBjfPRTumT+5oSVd0Sx9OC/lV8iTak=";
   };
 
   pnpmDeps = fetchPnpmDeps {
